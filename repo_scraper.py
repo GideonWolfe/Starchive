@@ -10,7 +10,7 @@ def get_github_repos(user,token):
     repos = []
 
     for repo in gh.get_user().get_starred():
-        repos.append(repo.clone_url)
+        repos.append(repo.clone_url) 
 
     return repos
 
