@@ -69,7 +69,7 @@ def main():
     gltoken = config['gitlabtoken'][0]
 
     # Make the output filepath if it doesn't already exist
-    if(!Path(outputdir).is_dir()):
+    if(Path(outputdir).is_dir() == False):
         Path(outputdir).mkdir(parents=True, exist_ok=True)
 
     # Prompt user for desired action
