@@ -1,8 +1,10 @@
 import re
-from art import text2art
 import yaml
+import os
+import io
 from pathlib import Path
 from github import Github
+from art import text2art
 
 '''
 Version 0.1
@@ -10,6 +12,8 @@ See README.md for usage instructions
 
 Started this repo 60% because of the usefulness and 40% because of the name.
 '''
+
+conf = {}
 
 # Makes sure the user chose a valid action 
 def handle_input(valid_arr, qstn):
@@ -38,12 +42,29 @@ def load_config(config_file):
 # Executed if user wants to archive a new user
 def new_archive():
     print("New archive")
-    userUrl = input("Enter the URL of the git user you wish to Starchive")
+    userUrl = input("Enter the username of the git user you would like to archive starred repositories for.\n")
+    gitType = handle_input([0,1], "Will we pull from gitlab[0] or github[1]\n")
     return 1
 
 # Executed when a user wants to update existing archives
 def existing_archive():
-    print("Existing Archive")
+    dNum = 0
+    allDir = []
+    x = os.listdir("REPO_LIST/")
+
+    print("Existing Archives\n\n")
+    
+    # Add all valid directories names to list, print for visual with associated numerical option for choice
+    for testDir in x:
+        if os.path.isdir(testDir):
+            print("[" + x + "]" + " Username: " + testDir)
+            allDir.append(testDir)
+            dNum += dNum
+    
+
+    # Get input for which directories to update
+    dirUpdate = input()
+
     return 1
 
 # Maps users choice to the correct function
@@ -55,28 +76,26 @@ def func_switch(arg):
     ch_func = switch.get(arg, lambda: "Invalid Option")
     print (ch_func())
     return 1
-
+    
 def main():
     # Show Program Title
     print(text2art("Starchive",font='starwars',chr_ignore=True) + "\n\n\n")
 
     # Load config file
-    config = load_config('config.yml')
-    outputdir = config['outputdir'][0] # Folder where starchives will be stored
-    ghuser = config['githubuser'][0]
-    gluser = config['gitlabuser'][0]
-    ghtoken = config['githubtoken'][0]
-    gltoken = config['gitlabtoken'][0]
 
+    with open("config.yaml", 'r') as stream:
+        conf = yaml.safe_load(stream)
+        #print(conf['defaults']['outputdir'])
+
+    '''
     # Make the output filepath if it doesn't already exist
     if(Path(outputdir).is_dir() == False):
         Path(outputdir).mkdir(parents=True, exist_ok=True)
-
-    # Prompt user for desired action
-    init_q = "Would you like to: \nstart a new archive [0] \n update an existing archive? [1]\n"
+    '''
+    init_q = "Would you like to: \n\nStart a new archive [0] \nUpdate an existing archive? [1]\n"
 
     # Handle user action choice
-    ch = handle_input([0, 1], init_q)
-    func_switch(ch)
+    ch = handle_input([0,1], init_q)
+    func_switch(ch) 
     
 main()

@@ -1,0 +1,10 @@
+defaults: &defaults
+  outputdir:  /home/Desktop
+
+users:
+  8-bear:
+    - github
+    - 328h9f9292h3829h4nf
+  8-bear:
+    - gitlab
+    - linvkjb38o139dnof12

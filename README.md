@@ -7,6 +7,7 @@
     - PyGithub
     - python-gitlab
     - PyYAML
+    - art
     - text2art
 
 ##### Usage
