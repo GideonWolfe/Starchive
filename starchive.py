@@ -39,6 +39,13 @@ def load_config(config_file):
         except yaml.YAMLError as exc:
             print(exc)
 
+# Make the output filepath if it doesn't already exist
+
+def handle_path(add_dir):
+    os.chdir(conf['defaults']['outputdir'])
+    if(Path(add_dir).is_dir() == False and add_dir != "/ADD_PATH"):
+        Path(add_dir).mkdir(parents=True, exist_ok=True)
+
 # Executed if user wants to archive a new user
 def new_archive():
     print("New archive")
@@ -46,24 +53,25 @@ def new_archive():
     gitType = handle_input([0,1], "Will we pull from gitlab[0] or github[1]\n")
     return 1
 
-# Executed when a user wants to update existing archives
+# Executed when a user wants to update all existing archives
+# Note: Made executive decision to add in ability to update certain users later and focus on getting all pulled now...
 def existing_archive():
-    dNum = 0
-    allDir = []
-    x = os.listdir("REPO_LIST/")
+    global conf
+    users_dat = conf['users']
+    # Change Directories
+    os.chdir(conf['defaults']['outputdir'])
 
-    print("Existing Archives\n\n")
+    print("Existing User Archives\n\n")
     
     # Add all valid directories names to list, print for visual with associated numerical option for choice
-    for testDir in x:
-        if os.path.isdir(testDir):
-            print("[" + x + "]" + " Username: " + testDir)
-            allDir.append(testDir)
-            dNum += dNum
-    
+    for key in users_dat:
 
-    # Get input for which directories to update
-    dirUpdate = input()
+        path = str(key) + "-" + users_dat[key][0]
+        handle_path(path)
+
+    exit()
+
+
 
     return 1
 
@@ -78,22 +86,20 @@ def func_switch(arg):
     return 1
     
 def main():
-    # Show Program Title
+    global conf
+
     print(text2art("Starchive",font='starwars',chr_ignore=True) + "\n\n\n")
 
-    # Load config file
-
+    # Load config file & save config file
     with open("config.yaml", 'r') as stream:
         conf = yaml.safe_load(stream)
-        #print(conf['defaults']['outputdir'])
 
-    '''
+    outdir = conf['defaults']['outputdir']
+
     # Make the output filepath if it doesn't already exist
-    if(Path(outputdir).is_dir() == False):
-        Path(outputdir).mkdir(parents=True, exist_ok=True)
-    '''
-    init_q = "Would you like to: \n\nStart a new archive [0] \nUpdate an existing archive? [1]\n"
+    handle_path(outdir)
 
+    init_q = "Would you like to: \n\nStart a new archive [0] \nUpdate existing archives? [1]\n"
     # Handle user action choice
     ch = handle_input([0,1], init_q)
     func_switch(ch) 
