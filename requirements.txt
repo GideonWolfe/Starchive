@@ -1,3 +1,7 @@
-python-gitlab
-pygithub
 art
+GitPython
+pygithub
+python-gitlab
+pyyaml
+
+

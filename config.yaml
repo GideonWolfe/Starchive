@@ -1,5 +1,5 @@
 defaults: &defaults
-  outputdir:  /Users/8br/Desktop/starchives
+  outputdir:  /Users/bsr/Desktop/starchives
 
 users: &users
   0000:
@@ -10,19 +10,3 @@ users: &users
     - testuser2
     - gitlab
     - linv9dnkjb38o13of12
-  0002:
-    - testuser3
-    - gitlab
-    - nof12invkl139djb38o
-  0003:
-    - testuser4
-    - github
-    - n38o139dnof1vlikjb2 
-  0004:
-    - testuser5
-    - github
-    - l38o139dnof12invkjb
-  0005:
-    - testuser6
-    - gitlab
-    - 38o123linvkjb43212 

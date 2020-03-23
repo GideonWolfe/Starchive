@@ -11,5 +11,3 @@
     - text2art
 
 ##### Usage
-
-

@@ -1,6 +1,6 @@
 from github import Github
 from gitlab import Gitlab
-
+from git import Repo
 
 # user: username on gitlab/hub | token: personal access token
 
@@ -22,3 +22,9 @@ def get_gitlab_repos(user,token):
         print(repo.web_url)
     
     return repos
+
+def clone_repos(repos, arc_dir, repo_dir):
+    for r in repos:
+        print(git.objects.base.name(r))
+        exit()
+        Repo.clone_from(r, repo_dir)
