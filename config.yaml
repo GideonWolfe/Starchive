@@ -3,6 +3,6 @@ defaults: &defaults
 
 users: &users
   0000:
-    - 8-bear
-    - github
-    - 8de8cfc5e136212dfdabebc7dcd37214cce2f8ff
+    - 'username'
+    - 'github/gitlab'
+    - 'key'
