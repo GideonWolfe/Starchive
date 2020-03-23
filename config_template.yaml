@@ -1,0 +1,8 @@
+defaults: &defaults
+  outputdir: 
+
+users: &users
+  0000:
+    - 
+    - 
+    - 
