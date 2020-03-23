@@ -3,10 +3,6 @@ defaults: &defaults
 
 users: &users
   0000:
-    - testuser1
+    - 8-bear
     - github
-    - 328h9f9292h3829h4nf
-  0001:
-    - testuser2
-    - gitlab
-    - linv9dnkjb38o13of12
+    - 8de8cfc5e136212dfdabebc7dcd37214cce2f8ff

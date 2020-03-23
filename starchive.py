@@ -14,7 +14,7 @@ from repo_scraper import clone_repos
 Version 0.1
 See README.md for usage instructions
 
-Started this repo 60% because of the usefulness and 40% because of the name.
+Started this project 60% because of the usefulness and 40% because of the name.
 '''
 
 conf = {}
@@ -66,7 +66,7 @@ def full_archive():
         elif(users_dat[key][1] == "github"):
             repos = get_github_repos(users_dat[key][0], users_dat[key][2])
         # Clone all repos
-        clone_repos(repos, arc_dir, repo_dir)
+        clone_repos(repos, repo_dir)
 
 def main():
     global conf
