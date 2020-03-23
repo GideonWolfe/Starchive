@@ -1,0 +1,8 @@
+defaults: &defaults
+  outputdir:  /Users/bsr/Desktop/starchives
+
+users: &users
+  0000:
+    - 'username'
+    - 'github/gitlab'
+    - 'key'

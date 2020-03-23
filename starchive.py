@@ -1,52 +1,85 @@
 import re
+import yaml
+import os
+import io
+from pathlib import Path
+from github import Github
 from art import text2art
+
+from repo_scraper import get_github_repos
+from repo_scraper import get_gitlab_repos
+from repo_scraper import clone_repos
 
 '''
 Version 0.1
 See README.md for usage instructions
 
-Started this repo 60% because of the usefulness and 40% because of the name.
+Started this project 60% because of the usefulness and 40% because of the name.
 '''
 
-# Globals
+conf = {}
+repos = {}
 
-def new_archive():
-    print("new archive")
-    return 1
+# Load config file
+def load_config(config_file):
+    with open(config_file, 'r') as stream:
+        try:
+            return yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
+# Create directories given path
+def handle_path(add_dir):
+    try:
+        if(Path(add_dir).is_dir() == False and add_dir != "/ADD_PATH"):
+            Path(add_dir).mkdir(parents=True, exist_ok=True)
+    except PermissionError:
+        print("\nConfiguration Error: Incorrect permissions! Could not create path from outputdir.\n")
+        exit()
+# Create user directories 
+def handle_directories():
+    global conf
+    users_dat = conf['users']
 
-def existing_archive():
-    print("Existing Archive")
-    return 1
+    os.chdir(conf['defaults']['outputdir'])
+    for key in users_dat:
+        user_path = str(key) + "-" + users_dat[key][0]
+        handle_path(user_path)
 
-def func_switch(arg):
-    switch = {
-        0: new_archive,
-        1: existing_archive,
-    }
-    ch_func = switch.get(arg, lambda: "Invalid Option")
-    print (ch_func())
-    return 1
+# Execute when a user wants to update all existing archives
+# Note: Made executive decision to add in ability to update certain users later and focus on getting all pulled now...
+def full_archive():
+    global conf
+    global repos
+    arc_dir = conf['defaults']['outputdir']
 
-def handle_input(valid_arr, qstn):
-    inp = -9669230
+    handle_directories()
 
-    while(inp not in valid_arr):
-        if(inp != -9669230):
-            print("Wrong input...\n")
-
-        inp = input(qstn)
-        chk = re.findall("[0-1000]", inp)
-
-        if(chk):
-            inp = int(inp)
-    
-    return inp
+    users_dat = conf['users']
+    os.chdir(arc_dir)
+    for key in users_dat:
+        # Create partial path for repos cloning
+        user_path = (str(key) + "-" + users_dat[key][0])
+        repo_dir = (arc_dir + "/" + user_path)
+        # Get repositories of user
+        if(users_dat[key][1] == "gitlab"):
+            repos = get_gitlab_repos(users_dat[key][0], users_dat[key][2])
+        elif(users_dat[key][1] == "github"):
+            repos = get_github_repos(users_dat[key][0], users_dat[key][2])
+        # Clone all repos
+        clone_repos(repos, repo_dir)
 
 def main():
-    print(text2art("Starchive",font='starwars',chr_ignore=True) + "\n\n\n")
-    init_q = "Would you like to start a new archive [0] or update an existing archive? [1]\n"
+    global conf
 
-    ch = handle_input([0, 1], init_q)
-    func_switch(ch)
+    print(text2art("Starchive",font='starwars',chr_ignore=True) + "\n\n\n")
+    # Load config file & save config file
+    with open("config.yaml", 'r') as stream:
+        conf = yaml.safe_load(stream)
+
+    outdir = conf['defaults']['outputdir']
+    # Make the output filepath if it doesn't already exist
+    handle_path(outdir)
+    # Update Existing Archives
+    full_archive()
     
 main()
